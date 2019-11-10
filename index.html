@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #box {
+            width: 450px;
+            margin: 200px auto;
+        }
+
+        #txt {
+            width: 350px;
+        }
+
+        #pop {
+            width: 350px;
+            border: 1px solid red;
+        }
+
+        #pop ul {
+            margin: 10px;
+            padding: 0px;
+            width: 200px;
+            list-style-type: none;
+
+        }
+    </style>
+    <script src="js/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div id="box">
+        <input type="text" id="txt" value="">
+        <input type="button" value="搜索" id="btn">
+    </div>
+
+
+    <script>
+        var keyWords = ["裙子夏新款", "裙子女装女", "裙子青少年", "裤子阔腿裤", "裤子女夏", "裤子短裤", "苹果好吃", "苹果此次召回还是没有中国"];
+
+        var txt = document.getElementById('txt')
+        var btn = document.getElementById('btn')
+        var box = document.getElementById('box')
+
+        //先获取文本框,添加键盘抬起事件
+        txt.onkeyup = function () {
+            var dv = document.getElementById('dv')
+
+            if (dv) {
+                //删除
+                box.removeChild(dv);
+            }
+            //获取文本框中的值在数组中是否存在
+            var tempArr = [];//临时数组(只存储文本框在数组中存在的内容)
+            var text = this.value;//文本框的内容
+            for (var i = 0; i < keyWords.length; i++) {
+                if (keyWords[i].indexOf(text) == 0) {//证明用户输入的字符串在数组的某个元素的字符串的最开始出现了
+                    tempArr.push(keyWords[i]);
+                }
+            }
+            console.log(tempArr)
+
+            //如果文本框为空,或者临时数组无数组,则移除创建的div
+            if (txt.value.length == 0 || tempArr.length == 0) {
+                if (dv) {
+                    //移除
+                    box.removeChild(dv);
+                }
+                return;
+            }
+
+            //创建div,把div加入到id为box的div中
+            var dvObj = document.createElement("div");
+            dvObj.id = "dv";//为创建的div添加一个id属性
+            box.appendChild(dvObj);
+            //设置样式
+            dvObj.style.width = "350px";
+            // dvObj.style.height="150px";
+            dvObj.style.border = "1px solid #aaa";
+            //遍历临时数组,取出里面的数据
+            for (var i = 0; i < tempArr.length; i++) {
+                //创建p
+                var pObj = document.createElement("p");
+                //加到新的div中
+                dvObj.appendChild(pObj);
+                pObj.className = 'p1';
+                pObj.innerHTML = tempArr[i];
+                pObj.style.margin = "0";
+                pObj.style.marginTop = "3px";
+                pObj.style.height = "20px";
+                pObj.style.fontFamily = "微软雅黑";
+                pObj.style.cursor = "pointer";
+                pObj.style.fontSize = "18px";
+                pObj.style.border = '1px solid red'
+
+            }
+
+            var elements = document.getElementsByClassName('p1');
+            Array.prototype.forEach.call(elements, function (element) {
+                element.onmouseover = function () {
+                    this.style.backgroundColor = "yellow";
+                };
+                element.onmouseout = function () {
+                    this.style.backgroundColor = "";
+                };
+                element.onclick = function () {
+
+                    txt.value = this.innerHTML
+                    console.log(this.innerHTML)
+                    var dv1 = document.getElementById('dv')
+                    box.removeChild(dv1);
+                }
+
+            });
+
+
+
+        };
+
+    </script>
+
+</body>
+
+</html>
